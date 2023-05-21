@@ -1,0 +1,228 @@
+//Examen FP Javier Gómez López
+
+//Ejercicio 2 Tablero y sus propiedades
+
+//Para este programa implementaremos varios métodos adicionales.
+
+//El primero corresponderá a la clase SecuenciaEnteros y devolvera el valor de la suma de una secuencia
+
+	int Suma ()
+	{
+		int resultado = 0;  //Inicializamos la variable que devolveremos al metodo a 0
+
+		for(int i = 0; i < utiles; i++)  //Recorremos toda la secuencia sumando todos los elementos
+		{
+			resultado += Elemento(i);
+		}
+
+		return resultado;
+	}
+
+/* Este sencillo método sera de caracter publico en la clase SecuenciaEnteros. Recorre toda la secuencia y va concatenando sumas
+hasta obtener el valor total de toda la secuencia.
+*/
+
+
+//El siguiente méotodo correspondera a la clase Tablero y sera SumaFilas
+
+	SecuenciaEnteros SumaFilas ()  //Este método devolvera una secuencia con las sumas de cada fila.
+	{
+		SecuenciaEnteros resultado;  //Iniciamos la secuencia donde almacenaremos todas las sumas
+
+		for (int i = 0, i < dimension; i++)  //Recorremos las filas de el tablero
+		{
+			SecuenciaEnteros fila = Fila(i);  //Creamos una nueva fila que representara cada fila de el tablero
+
+			int suma = fila.Suma();		//Utilizando el metodo anterior obtenemos la suma de dicha fila
+
+			resultado.Aniade(suma);		//Aniadimos a el resultado que devolvera el metodo la suma de cada fila
+		}
+
+		return resultado;		//Devolvemos la secuencia al método
+	}
+
+/* Este método será de carácter privado pues solo lo llamara el metodo EsCalifragilistico y EsSuperCalifraglistico. Recorre todas las filas
+de el tablero aniadiendo a una secuencia nueva todos estos resultados.
+*/
+
+//El siguiente méotodo correspondera a la clase Tablero y sera SumaColumnas
+
+	SecuenciaEnteros SumaColumnas ()  //Este método devolvera una secuencia con las sumas de cada columna.
+	{
+		SecuenciaEnteros resultado;  //Iniciamos la secuencia donde almacenaremos todas las sumas
+
+		for (int i = 0, i < dimension; i++)  //Recorremos las columnas de el tablero
+		{
+			SecuenciaEnteros columna = Columna(i);  //Creamos una nueva columna que representara cada columna de el tablero
+
+			int suma = columna.Suma();		//Utilizando el metodo anterior obtenemos la suma de dicha columna
+
+			resultado.Aniade(suma);		//Aniadimos a el resultado que devolvera el metodo la suma de cada columna
+		}
+
+		return resultado;		//Devolvemos la secuencia al método
+	}
+
+/* Este método será de carácter privado pues solo lo llamara el metodo EsCalifragilistico y EsSuperCalifraglistico. Recorre todas las 
+columnas de el tablero aniadiendo a una secuencia nueva todos estos resultados.
+*/
+
+//El siguiente méotodo correspondera a la clase Tablero y sera SumaDiagonal
+
+	SecuenciaEnteros SumaDiagonal ()  //Este método devolvera una secuencia con las sumas de cada diagonal.
+	{
+		SecuenciaEnteros resultado;  //Iniciamos la secuencia donde almacenaremos todas las sumas
+
+		int suma_1 = 0;  //Inicializamos la variable para la suma de la primera diagonal
+
+		for (int i = 0, i < dimension; i++)  //Recorremos la matriz del tablero
+		{
+			suma_1 += t[i][i];  //Recorremos toda la diagonal realizando sus sumas
+		}
+
+		resultado.Aniade(suma_1);  //Aniadimos a la secuencia resultado la primera suma.
+
+
+		//Repetimos el proceso
+		int suma_2 = 0;  //Inicializamos la variable para la suma de la segunda diagonal
+
+		for (int k = dimension - 1, i >= 0; i--)  //Recorremos la matriz del tablero por la segunda diagonal
+		{
+			suma_2 += t[k][k];  //Recorremos toda la diagonal realizando sus sumas
+		}
+
+		resultado.Aniade(suma_2);  //Aniadimos a la secuencia resultado la segunda suma.
+
+		return resultado;  //Devolvemos la secuencia con las dos sumas
+	}
+
+/* Este método será de carácter privado pues solo lo llamara el metodo EsCalifragilistico y EsSuperCalifraglistico. Recorre las dos 
+diagonales de el tablero aniadiendo a una secuencia nueva todos estos resultados.
+*/
+
+//Ahora creamos un método para obtener todas las sumas juntas
+
+	SecuenciaEnteros SumaTotal()
+	{
+		SecuenciaEnteros filas = SumaFilas();
+		SecuenciaEnteros columnas = SumaColumnas();
+		SecuenciaEnteros diagonal = SumaDiagonal();   //Iniciamos 3 secuencias que contienen las distintas sumas;
+
+		SecuenciaEnteros total = filas;  //Creamos una secuencia donde uniremos las 3 anteriores
+
+		for (int i = 0; i < columnas.TotalUtilizados(); i++)  //Aniadimos al total de filas las columnas
+		{
+			int elemento = columnas.Elemento(i);
+
+			total.Aniade(elemento);
+		}
+
+		for (int k = 0; i < diagonal.TotalUtilizados(); k++)  //Aniadimos al total de filas y columnas la diagonal
+		{
+			int elemento = diagonal.Elemento(k);
+
+			total.Aniade(elemento);
+		}
+
+		return total;
+	}
+
+/*Este metodo sera de caracter privado. Lo que hace es unir en una sola secuencia de enteros todas las sumas obtenidas con 
+los otros métodos.
+*/
+
+//Ahora implementaremos el método EsCalifragilistico
+
+	bool EsCalifragilistico ()  //El método será de tipo bool pues o el tablero tiene esta propiedad o no la tiene
+	{
+		bool es_caligragilistico;  //Variable donde almacenaremos el resultado
+
+		SecuenciaEnteros total = SumaTotal();  //Obtenemos la secuencia con todas las sumas
+
+		//Ahora ya tenemos en total todas las sumas. Comprobamos si hay valores iguales
+
+		bool seguir = true;  //Variable de la que dependera la continuidad de los calculos siguientes
+		total.Ordenamos()  //Ordenamos los caracteres para evitar que dos repetidos esten separados y no se detecten
+
+		for (int m = 0; (m < total.TotalUtilizados() - 1) && seguir; m++)  //m no debera tomar el valor ultimo pues comparamos por pares
+		{
+			if(total.Elemento(m) != total.Elemento(m+1))
+			{
+				seguir = true;
+				es_caligragilistico = true;
+			}
+			else
+			{
+				seguir = false;
+				es_caligragilistico = false;
+			}
+		}
+
+		return es_caligragilistico;  //devolvemos al metodo el resultado obtenido
+	}
+
+/* Este método será de carácter público. Tras esto compara todos los elementos de esta secuencia y si hay dos iguales para el proceso y devuelve
+false. En caso contrario, finaliza los calculos y devuelve true. Cabe destacar que los ordenamos puesto que si no con este método
+de comparacion podriamos perder la veracidad de este. Por ejemplo {12,22,12,22}, usando este algortimo, no detectaria dos iguales. 
+Pero si los ordenamosm {12,12,22,22} detectaria que el primero y el segundo son iguales.
+*/
+
+//Ahora implementaremos el metodo EsSuperCalifragilistico
+
+	bool EsSuperCalifragilistico ()
+	{
+		bool es_super;  //Variable donde almacenaremos los resultados
+
+		bool es_caligragilistico = EsCalifragilistico();  //Primero comprobamos que es califragilistico
+
+		if(es_caligragilistico)  //Si no cumple la condicion no ejecuta ningun calculo
+		{
+			SecuenciaEnteros total = SumaTotal();  //Obtenemos la suma total de todas las filas, columnas y diagonales
+
+			total.OrdenaCreciente();  //Ordenamos todas las sumas en un orden creciente
+			bool seguir = true;  //Variable que controla la continuidad o no de los calculos
+
+			for (int i = 0; (i < total.TotalUtilizados - 1) && seguir; i++)  //Recorremos todas las sumas a pares
+			{
+				if((total.Elemento(i+1) - total.Elemento(i)) == 1)  //Comprobamos si la diferencia es 1
+				{
+					seguir = true;
+					es_super = true;
+				}
+				else
+				{
+					seguir = false;
+					es_super = false;
+				}
+			}
+		}
+		else
+		{
+			es_super = false;  //Si no es califragilistico no puede ser supercalifragilistico
+		}
+
+		return es_super;
+	}
+
+/* Este metodo primero comprobara si el tablero es califragilistico pues es una condicion necesaria 
+(que no suficiente) para que sea supercalifragilistico. Tras esto, ordena la secuencia de sumas y comprueba que 
+la diferencia entre elementos consecutivos es 1. Si esto no ocurriese en algun punto no continuaria el programa y 
+devolvería un false. Si todo es correcto devuelve un true.
+*/
+
+
+/* Ahora explicaremos el funcionamiento de el metodo EsSuperCalifragilistico con una tablero real de 3x3.
+Sea el tablero: 
+0 3 9
+4 9 9
+6 5 1
+
+Al ejecutar el metodo, primero llamariamos al método EsCalifragilistico. Dentro de este tendriamos la secuencia 
+formada por las sumas de las filas que seria filas = {12,22,12}, despues las sumas de las columnas que sería
+columnas = {10,17,19} y por ultimo la suma de las diagonales que sería diagonales = {10, 24}. Tras esto uniría
+todas estas secuencias y en una total = {12,22,12,10,17,19,10,24}. 
+Ahora ordenaria los elementos total = {10,10,12,12,17,19,22,24}. Pasaria a comprobar por pares y veria que el primer
+elmentto es igual al segundo, pararía la ejecucion, devolveria un false y por tanto ahora en el metodo EsSuperCalifragalistico
+no calcularia nada, pondria el valor es_super en false y devolvería un false. En este caso esta tabla no es ni califragilistica
+ni supercalifragilistica.
+*/

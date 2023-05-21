@@ -1,0 +1,69 @@
+//Examen FP Javier Gómez López
+
+//Ejercicio 1 Palabras Pseudosimétricas
+
+	//Creamos la constante de cantidad de letras
+	const int LETRAS = 'z' - 'a' + 1;
+
+//Primero implementaremos el método Subsecuencia
+
+
+	SecuenciaCaracteres Subsecuencia (int elementos, int inicio) //El método recibe un número máximo de elementos 
+	{        										 //a incluir en la secuencia que vamos a devolver
+
+		SecuenciaCaracteres resultado;  //Creamos la secuencia que devolveremos al método
+
+		bool ejecutar = (elementos > 0) && (elementos <= total_utilizados) && (inicio > 0) && (inicio < total_utilizados);    
+		//Comprobamos que se han introducido un número acorde de elementos
+																			
+		if (ejecutar)   //Si el numero de elementos es correcto, realizamos las operaciones
+		{
+			for (int i = 0; i < elementos; i++)    //Recorremos la secuencia original y aniadimos los elementos
+			{
+				char aniadir = Elemento(inicio);		   //a la secuencia que vamos a devolver desde el inicio indicado
+				inicio++;    //Vamos avanzando en la posicion de recorrido
+
+				resultado.Aniade(aniadir);  //Aniadimos a la secuencia resultado los elementos desde el inicio hasta tener el número indicado
+			}								//de elementos
+		}
+
+		return resultado;    //Aquí devolvemos el resultado.
+	}
+
+	/*Con este método, si el número de elementos es coherente con la situación del programa, es decir mayor que 0 
+	(pues si fuese negativo o 0 no tendría sentido), recorreremos la secuencia de caracteres original e iremos 
+	aniadiendo uno a uno los elementos de esta a la subsecuencia que vamos a devolver, desde el inicio dado por el 
+	usuario hasta tener en el resultado el número de elementos indicados. En caso de que fuese 0 o negativo el 
+	valor proporcionado al método, este devolvería la secuencia vacía (Suponemos que el constructor proporcionado en el 
+	enunciado [SecuenciaCaracteres()] crea secuencias vacías y no con valores basura). 
+	Este método será público pues quizá sea necesario llamarlo desde fuera de la clase.
+	*/
+
+
+
+//Ahora implementaremos el método EsSeudoSimetrica
+
+	bool EsSeudoSimetrica (SecuenciaCaracteres a_comprobar)  //El método recibe la secuencia a comprobar que es pseudosimétrica
+	{
+		bool resultado;    //Creamos la variable que devolveremos al método como resultado
+
+		int elementos = a_comprobar.Total_utilizados();   //Comprobamos la cantidad de elementos que tiene la secuencia a comprobar
+
+		int dividir = elementos/2;   //Tomamos los elementos para dividir la secuencia en dos partes iguales.
+
+		SecuenciaCaracteres subsecuencia1 = Subsecuencia(dividir, 0) //Creamos la primera subsecuencia desde el inicio hasta la mitad
+
+		int contador_1[LETRAS] = {0};  //Creamos un vector de enteros donde guardaremos las aparaciones de cada letra
+		int pos;  //Creamos un controlador de la posicion en el array
+
+		for (char c = 'a'; c <= 'z'; c++) //Recorremos toda la subsecuencia para comprobar los caracteres
+		{
+			for (int i = 0; i < subsecuencia1.Total_utilizados(); i++) //Comprobamos todas las letras y aniadimos uno por cada aparicion
+			{
+				if(subsecuencia1.Elemento(i) == c)
+				{
+					contador[pos]
+				}
+			}
+		}
+	}

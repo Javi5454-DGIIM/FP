@@ -1,0 +1,147 @@
+//Examen FP Javier Gómez López
+
+//Ejercicio 1 Palabras Pseudosimétricas
+
+	//Creamos la constante de cantidad de letras
+	const int LETRAS = 'z' - 'a' + 1;
+
+//Primero implementaremos el método Subsecuencia
+
+
+	SecuenciaCaracteres Subsecuencia (int elementos, int inicio) //El método recibe un número máximo de elementos 
+	{        										 //a incluir en la secuencia que vamos a devolver
+
+		SecuenciaCaracteres resultado;  //Creamos la secuencia que devolveremos al método
+
+		bool ejecutar = (elementos > 0) && (elementos <= total_utilizados) && (inicio > 0) && (inicio < total_utilizados);    
+		//Comprobamos que se han introducido un número acorde de elementos
+																			
+		if (ejecutar)   //Si el numero de elementos es correcto, realizamos las operaciones
+		{
+			for (int i = 0; i < elementos; i++)    //Recorremos la secuencia original y aniadimos los elementos
+			{
+				char aniadir = Elemento(inicio);		   //a la secuencia que vamos a devolver desde el inicio indicado
+				inicio++;    //Vamos avanzando en la posicion de recorrido
+
+				resultado.Aniade(aniadir);  //Aniadimos a la secuencia resultado los elementos desde el inicio hasta tener el número indicado
+			}								//de elementos
+		}
+
+		return resultado;    //Aquí devolvemos el resultado.
+	}
+
+	/*Con este método, si el número de elementos es coherente con la situación del programa, es decir mayor que 0 
+	(pues si fuese negativo o 0 no tendría sentido), recorreremos la secuencia de caracteres original e iremos 
+	aniadiendo uno a uno los elementos de esta a la subsecuencia que vamos a devolver, desde el inicio dado por el 
+	usuario hasta tener en el resultado el número de elementos indicados. En caso de que fuese 0 o negativo el 
+	valor proporcionado al método, este devolvería la secuencia vacía (Suponemos que el constructor proporcionado en el 
+	enunciado [SecuenciaCaracteres()] crea secuencias vacías y no con valores basura). 
+	Este método será público pues quizá sea necesario llamarlo desde fuera de la clase.
+	*/
+
+
+
+
+//Ahora implementaremos el método EsSeudoSimetrica
+
+	bool EsSeudoSimetrica ()
+	{
+		bool resultado;    //Creamos la variable que devolveremos al método como resultado
+
+		int elementos = total_utilizados;   //Comprobamos la cantidad de elementos que tiene la secuencia a comprobar
+
+		int dividir = elementos/2;   //Tomamos los elementos para dividir la secuencia en dos partes iguales.
+
+		SecuenciaCaracteres subsecuencia1 = Subsecuencia(dividir, 0) //Creamos la primera subsecuencia desde el inicio hasta la mitad
+
+		int contador_1[LETRAS] = {0};  //Creamos un vector de enteros donde guardaremos las aparaciones de cada letra
+		int pos = 0;  //Creamos un controlador de la posicion en el array
+
+		for (char c = 'a'; c <= 'z'; c++) //Recorremos toda la subsecuencia para comprobar los caracteres
+		{
+			for (int i = 0; i < dividir; i++) //Comprobamos todas las letras y aniadimos uno por cada aparicion
+			{
+				if(subsecuencia1.Elemento(i) == c)
+				{
+					contador_1[pos]++;
+				}
+			}
+
+			pos++;
+		}
+
+
+
+		if(elementos % 2 != 0)
+		{
+			int inicio = dividir + 1;   //Si el numero de elementos es impar obviamos la letra de la mitad
+		}
+		else
+		{
+			int inicio = dividir;  //si el numero es par dividimos la nueva secuencia por la mitad
+		}
+
+
+		SecuenciaCaracteres subsecuencia2 = Subsecuencia(dividir, inicio) //Creamos la segunda subsecuencia desde la mitad hasta el final
+
+		int contador_2[LETRAS] = {0};  //Creamos un vector de enteros donde guardaremos las aparaciones de cada letra
+		pos = 0;  //Reiniciamos el controlador de la posicion en el array
+
+		for (char m = 'a'; m <= 'z'; m++) //Recorremos toda la subsecuencia para comprobar los caracteres
+		{
+			for (int k = 0; i < dividir; k++) //Comprobamos todas las letras y aniadimos uno por cada aparicion
+			{
+				if(subsecuencia2.Elemento(i) == m)
+				{
+					contador_2[pos]++;
+				}
+			}
+
+			pos++;
+		}
+
+		//Ahora que ya tenemos las frecuencias de aparición de las dos subsecuencias, comprobamos si coinciden
+
+		bool seguir = true; //creamos una variable para detener la ejecución si en un valor no se cumple y ahorrar calculos
+		for (int t = 0; t < LETRAS && seguir; t++)
+		{
+			if (contador_1[t] == contador_2[t])  //Comprobamos si las frecuencias coinciden letra por letra
+			{
+				resultado = true;
+				seguir = true;
+			}
+			else
+			{
+				resultado = false;
+				seguir = false;
+			}
+		}
+
+		return resultado;		//Devolvemos si la son pseudosimetricas o no.
+	}
+
+	/*Con este método lo que hacemos es valorar dos subsecuencias distintas creadas a partir de la que queremos comprobar.
+	Primero al dividir el numero de elementos de la secuencia original entre dos y almacenarlo en una variable de tipo
+	entero, estamos truncando el resultado y obteniendo así el número de elementos que tendra cada subsecuencia. (Ejemplo = 7/2 sería 3)
+	Tras esto recorremos todas las letras minúsculas inglesas y almacenamos cada aparcion en un contador de enteros que tendrá
+	un tamanio igual a la cantidad de letras inglesas que hemos inicializado en una constante LETRAS. El contador lo inicamos a 0 
+	para asi evitar tener valores basura. Para la segunda subsecuencia, comprobamos que si el numero es par se inicia en la letra del
+	medio pero si fuese impar se iniciaria en una posicion adelantada, obviando así la letra central. Repetimos el proceso del contador
+	y tras esto comparamos los numeros posicion a posicion de cada contador. En el momento en el que uno no coincida se finalizan los 
+	calculos y se devuelve false al método. Si todos coinciden se devuelve un true.
+	*/
+
+
+
+
+/*Ahora explicaremos el metodo subsecuencia con el ejemplo SecuenciaCaracteres nombre = "javiergomez". 
+Si ejecutamos en el main nombre.EsSeudoSimetrica, lo primero que hara el metodo será crear la variable que sera el resultado 
+(true or false) y tras esto comprobara el numero de elementos de nombre, en este caso 11. Tras esto calculara la cantidad de 
+elementos que deberá tener cada subsecuencia, en este caso 11/2 en enteros es 5. Por lo tanto creara la primera subsecuencia con 5
+elementos desde el 0 (la 'j') hasta la 5 ('e'). Contabilizara en el contador la frecuencia de aparicion de cada letra (Por ejemplo
+contador[0] = 1 pues es la 'a' o contador[9] = 1 pues es la 'j'). Tras esto comprobaremos que el numero de elementos de nombre
+es impar y por ello la segunda subsecuencia la inicara en la posicion 6, es decir, la 'g' y obviara la 'r'. Repetiremos el proceso 
+de conteo de la anterior subsecuencia. Tras esto recorremos los arrays de contadores comprobando que las cantidad son las mismas 
+en cada posicion. En el momento en el que una falle, se detendrá el proceso y se devovlera un false al método. Si todas coinciden 
+se devovlerá un true.
+*/
